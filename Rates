@@ -1,0 +1,6 @@
+INSERT INTO rates
+(vehicle_type, amount_per_hour, description)
+VALUES
+('Car', 500, '500 RWF per hour'),
+('Motorcycle', 200, '200 RWF per hour'),
+('Truck', 1000, '1000 RWF per hour');

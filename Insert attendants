@@ -1,0 +1,6 @@
+INSERT INTO attendants (name, phone, email)
+VALUES
+('John Peter', '0788123456', 'john@gmail.com'),
+('Mary Grace', '0788234567', 'mary@gmail.com'),
+('David Eric', '0788345678', 'david@gmail.com'),
+('Alice Jane', '0788456789', 'alice@gmail.com');

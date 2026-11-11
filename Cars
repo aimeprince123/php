@@ -1,0 +1,7 @@
+INSERT INTO cars
+(plate_number, make, color, owner_name, phone)
+VALUES
+('RAA123A', 'Toyota', 'Black', 'John Peter', '0788123456'),
+('RAB234B', 'Honda', 'White', 'Mary Grace', '0788234567'),
+('RAC345C', 'BMW', 'Blue', 'David Eric', '0788345678'),
+('RAD456D', 'Toyota', 'Red', 'Alice Jane', '0788456789');

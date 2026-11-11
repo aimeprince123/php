@@ -1,0 +1,115 @@
+
+CREATE DATABASE IF NOT EXISTS car_parking;
+USE car_parking;
+
+-- 1. USERS TABLE
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. ATTENDANTS TABLE
+CREATE TABLE attendants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(25),
+    email VARCHAR(150) UNIQUE
+);
+
+-- 3. CARS TABLE
+CREATE TABLE cars (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plate_number VARCHAR(30) NOT NULL UNIQUE,
+    make VARCHAR(80),
+    color VARCHAR(50),
+    owner_name VARCHAR(100),
+    phone VARCHAR(25)
+);
+
+-- 4. PARKING SLOTS TABLE
+CREATE TABLE parking_slots (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    slot_number VARCHAR(20) NOT NULL UNIQUE,
+    location VARCHAR(100),
+    status ENUM(
+        'available',
+        'occupied',
+        'maintenance'
+    ) DEFAULT 'available'
+);
+
+-- 5. RATES TABLE
+CREATE TABLE rates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_type VARCHAR(50) NOT NULL,
+    amount_per_hour DECIMAL(10,2) NOT NULL,
+    description VARCHAR(255)
+);
+
+-- 6. PARKING RECORDS TABLE
+CREATE TABLE parking_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    car_id INT NOT NULL,
+    slot_id INT NOT NULL,
+    attendant_id INT NULL,
+    entry_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    exit_time DATETIME NULL,
+    rate_id INT NULL,
+    notes TEXT,
+
+    FOREIGN KEY (car_id)
+    REFERENCES cars(id),
+
+    FOREIGN KEY (slot_id)
+    REFERENCES parking_slots(id),
+
+    FOREIGN KEY (attendant_id)
+    REFERENCES attendants(id)
+    ON DELETE SET NULL,
+
+    FOREIGN KEY (rate_id)
+    REFERENCES rates(id)
+    ON DELETE SET NULL
+);
+
+-- 7. PAYMENTS TABLE
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    record_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method ENUM(
+        'cash',
+        'mobile_money',
+        'card',
+        'bank'
+    ) DEFAULT 'cash',
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reference_number VARCHAR(100),
+
+    FOREIGN KEY (record_id)
+    REFERENCES parking_records(id)
+);
+
+-- INSERT PARKING SLOTS
+INSERT INTO parking_slots
+(slot_number, location, status)
+VALUES
+('A01','Section A','available'),
+('A02','Section A','available'),
+('A03','Section A','available'),
+('A04','Section A','available'),
+('B01','Section B','available'),
+('B02','Section B','available'),
+('B03','Section B','available'),
+('B04','Section B','available');
+
+-- INSERT RATES
+INSERT INTO rates
+(vehicle_type, amount_per_hour, description)
+VALUES
+('Car',500,'500 RWF per hour'),
+('Motorcycle',200,'200 RWF per hour'),
+('Truck',1000,'1000 RWF per hour');
